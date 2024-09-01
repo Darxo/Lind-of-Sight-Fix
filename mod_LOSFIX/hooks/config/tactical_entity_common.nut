@@ -9,6 +9,20 @@
 	return heightDifference >= 3;
 }
 
+::Const.Tactical.Common.canSee <- function( _entity, _targetTile )
+{
+	local myTile = _entity.getTile();
+	local visionRange = _entity.getCurrentProperties().getVision();
+	local tileDistance = myTile.getDistanceTo(_targetTile);
+
+	if (tileDistance + _targetTile.Level > visionRange + myTile.Level)	// You can view further downhill and less uphill
+	{
+		return false;	// Our vision is not enough to see the tile
+	}
+
+	return ::Const.Tactical.Common.hasLineOfSight(myTile, _targetTile);
+}
+
 ::Const.Tactical.Common.hasLineOfSight <- function( _startTile, _targetTile )
 {
 	local ccStartTile = ::CubeCoordinates.fromAxial(_startTile);
