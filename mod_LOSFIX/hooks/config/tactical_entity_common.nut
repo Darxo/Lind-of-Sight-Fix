@@ -3,7 +3,7 @@
 	if (_userTile.getDistanceTo(_targetTile) <= 1) return false;	// Both tiles are adjacent. They will always see each other
 
 	local tileHeight = _tile.Level;
-	if (!_tile.IsEmpty && _tile.getEntity().isBlockSight()) tileHeight += 2;	// A visibility blocking object counts as 2 height instead of blocking LOS outright
+	if (!_tile.IsEmpty && _tile.getEntity().isBlockingSight()) tileHeight += 2;	// A visibility blocking object counts as 2 height instead of blocking LOS outright
 
 	// If the tile in question is very close to the user or target, then it is sufficient if it's 2 levels higher rather than the 3 otherwise
 	if (_userTile.getDistanceTo(_tile) == 1 && (tileHeight >= _userTile.Level + 2))
