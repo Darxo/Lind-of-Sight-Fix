@@ -1,9 +1,19 @@
 ::Const.Tactical.Common.isBlockingLOS <- function( _userTile, _targetTile, _tile )
 {
-	if (_userTile.getDistanceTo(_targetTile) <= 1) return false;
+	if (_userTile.getDistanceTo(_targetTile) <= 1) return false;	// Both tiles are adjacent. They will always see each other
 
 	local tileHeight = _tile.Level;
-	if (!_tile.IsEmpty && _tile.getEntity().isBlockSight()) tileHeight += 2;
+	if (!_tile.IsEmpty && _tile.getEntity().isBlockSight()) tileHeight += 2;	// A visibility blocking object counts as 2 height instead of blocking LOS outright
+
+	// If the tile in question is very close to the user or target, then it is sufficient if it's 2 levels higher rather than the 3 otherwise
+	if (_userTile.getDistanceTo(_tile) == 1 && (tileHeight >= _userTile.Level + 2))
+	{
+		return true;
+	}
+	if (_targetTile.getDistanceTo(_tile) == 1 && (tileHeight >= _targetTile.Level + 2))
+	{
+		return true;
+	}
 
 	local heightDifference = tileHeight - _userTile.Level + tileHeight - _targetTile.Level;
 	return heightDifference >= 3;
