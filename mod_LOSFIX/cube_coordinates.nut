@@ -10,23 +10,26 @@
 		Y = null;
 		Z = null;
 
-		oddX = null;	// Vanilla odd-q square coordinates
-		oddY = null;	// Vanilla odd-q square coordinates
-
 		axialX = null;	// Vanilla axial coords coordinates
 		axialY = null;	// Vanilla axial coords coordinates
 
-		constructor( _x, _y, _z )
+		constructor( _x, _y = null, _z = null )
 		{
-			X = _x;
-			Y = _y;
-			Z = _z;
+			if (_z == null)
+			{
+				this.X = _x[0];
+				this.Y = _x[1];
+				this.Z = _x[2];
+			}
+			else
+			{
+				this.X = _x;
+				this.Y = _y;
+				this.Z = _z;
+			}
 
-			oddX = _x;
-			oddY = _y + (_x - (::Math.round(_x) & 1)) / 2;
-
-			axialX = _x;
-			axialY = _y;
+			axialX = this.X;
+			axialY = this.Y;
 		}
 
 		function get( _index )
@@ -48,12 +51,6 @@
 			return "[" + X + ", " + Y + ", " + Z + "]";
 		}
 
-		// Invert this tile
-		function invert()
-		{
-			return ::modLOSFIX.CubeCoordinates.CCTile(-X, -Y, -Z);
-		}
-
 		// Return true if the coordinates of two tiles are exactly equal
 		function isEqual( _otherTile )
 		{
@@ -72,50 +69,12 @@
 			if (_otherTile == null) _otherTile = ::modLOSFIX.CubeCoordinates.Origin();
 			return (::fabs(X - _otherTile.X) + ::fabs(Y - _otherTile.Y) + ::fabs(Z - _otherTile.Z)) / 2.0;
 		}
-
-		// Return the index of the value that is the absolute highest
-		function indexOfMaxAbsolute()
-		{
-			// Compute absolute values
-			local absA = ::Math.abs(X);
-			local absB = ::Math.abs(Y);
-			local absC = ::Math.abs(Z);
-
-			// Determine the index of the maximum absolute value
-			if (absA >= absB && absA >= absC)
-				return 0;  // a has the largest absolute value
-			else if (absB >= absA && absB >= absC)
-				return 1;  // b has the largest absolute value
-			else
-				return 2;  // c has the largest absolute value
-		}
-	}
-	// Generate a CC Tile, given Odd-q coordinates like how BB uses them
-	function fromOddQ( _tacticalTile, _optionalY = null )
-	{
-		local x = _tacticalTile;
-		local y = _optionalY;
-		if (_optionalY == null)
-		{
-			x = _tacticalTile.SquareCoords.X;
-			y = _tacticalTile.SquareCoords.Y;
-		}
-
-		local r = y - (x - (y & 1)) / 2;
-		return this.CCTile(x, r, -x - r);
 	}
 
-	function fromAxial( _tacticalTile, _optionalY = null )
+	// Convert Tactical.Tile into a CCTile
+	function fromAxial( _tacticalTile )
 	{
-		local x = _tacticalTile;
-		local y = _optionalY;
-		if (_optionalY == null)
-		{
-			x = _tacticalTile.X;
-			y = _tacticalTile.Y;
-		}
-
-		return this.CCTile(x, y, -x -y);
+		return this.CCTile(_tacticalTile.X, _tacticalTile.Y, -_tacticalTile.X -_tacticalTile.Y);
 	}
 
 	function cloneTile( _tile )
@@ -132,13 +91,13 @@
 	function getNormalizedDirections( _start, _end )
 	{
 		local vector = this.getVector(_start, _end);
-		if (_start.X == _end.X || _start.Y == _end.Y || _start.Z == _end.Z)	// _end is sitting on one of the _start - axis. Calculation is trivial
+		local axisTiles = this.getAxisTiles(vector);
+		if (axisTiles.len() == 1)
 		{
-			return [vector.darxoNormalize()];
+			return [axisTiles[0].darxoNormalize()];
 		}
 		else
 		{
-			local axisTiles = this.getAxisTiles(vector);
 			return [axisTiles[0].darxoNormalize(), axisTiles[1].darxoNormalize()];
 		}
 	}
@@ -153,72 +112,42 @@
 	// Given a tile that must lie on a plane (not axis). Return 2 tiles on the two axis on both sides with the same distance to the origin
 	function getAxisTiles( _tile )
 	{
-		local constantAxisIndex = _tile.indexOfMaxAbsolute();
-		local max = _tile.get(constantAxisIndex);
-
-		local ret1 = this.CCTile(max, max, max);
-		local ret2 = this.CCTile(max, max, max);
-
-		constantAxisIndex = (++constantAxisIndex) % 3;
-
-		ret1.set(constantAxisIndex, 0);
-		ret2.set(constantAxisIndex, -max);
-
-		constantAxisIndex = (++constantAxisIndex) % 3;
-
-		ret1.set(constantAxisIndex, -max);
-		ret2.set(constantAxisIndex, 0);
-
-		return [ret1, ret2];
-	}
-
-	// Given 2 tiles that are on the same axis. Return all tiles that are in between those two tiles including the passed ones
-	function getTilesBetween( _start, _end )
-	{
-		if (_start.isEqual(_end))
+		local highestValue = 0;
+		for (local j = 0; j <= 2; ++j)
 		{
-			return [this.cloneTile(_start)];
+			if (_tile.get(j) == 0)
+			{
+				return [_tile];	// The given tile is already on an axis. We return itself as the only return value
+			}
+			else if (::Math.abs(_tile.get(j)) > ::Math.abs(highestValue))
+			{
+				highestValue = _tile.get(j);
+			}
 		}
 
-		local ret = [this.cloneTile(_start), this.cloneTile(_end)];
-
-		local normalizedVector = this.getVector(_start, _end).darxoNormalize();
-		local it = this.add(_start, normalizedVector);
-		while (!it.isEqual(_end))
+		local doneFirstSet = false;
+		local candidate1 = array(3, 0);
+		local candidate2 = array(3, 0);
+		for (local j = 0; j <= 2; ++j)
 		{
-			ret.push(it);
-			it = this.add(it, normalizedVector);
-		}
-		this.printTiles(ret);
-		return ret;
-	}
-
-	// If one of the _tilesToCheck is exactly the same as _stepCenter, then only one tile is returned.
-	// Otherwise the closest two tiles are returned
-	function getClosestTiles( _stepCenter, _tilesToCheck )
-	{
-		this.printTiles(_tilesToCheck)
-		if (_tilesToCheck.len() == 1) return _tilesToCheck;
-
-		local sortedTiles = [];
-		foreach (tile in _tilesToCheck)
-		{
-			sortedTiles.push({
-				Distance = tile.getHexDistance(_stepCenter),
-				Tile = tile
-			});
+			local value = _tile.get(j);
+			if (value == highestValue)
+			{
+				candidate1[j] = highestValue;
+				candidate2[j] = highestValue;
+			}
+			else if (!doneFirstSet)
+			{
+				doneFirstSet = true;
+				candidate2[j] = -highestValue;
+			}
+			else
+			{
+				candidate1[j] = -highestValue;
+			}
 		}
 
-		sortedTiles.sort(@(a, b) a.Distance <=> b.Distance);
-
-		if (sortedTiles[0].Distance == 0)
-		{
-			return [sortedTiles[0].Tile];
-		}
-		else
-		{
-			return [sortedTiles[0].Tile, sortedTiles[1].Tile];
-		}
+		return [this.CCTile(candidate1), this.CCTile(candidate2)];
 	}
 
 	function generatePath( _start, _end )
@@ -240,26 +169,56 @@
 	// Generate a path from the origin to _end
 	function __generatePath( _end )
 	{
-		if (_end.X == 0 || _end.Y == 0 || _end.Z == 0)	// _end is sitting on one of the axis. Calculation is trivial
-		{
-			return getTilesBetween(this.Origin(), _end);
-		}
-		else
-		{
-			local ret = [this.Origin(), this.cloneTile(_end)];
+		local ret = [this.Origin(), this.cloneTile(_end)];
 
-			local normalizedVector = _end.darxoNormalize();
-			local stepCenter = this.add(this.Origin(), normalizedVector);
-			for (local i = 1; i < _end.getHexDistance(); ++i)
+		local normalizedVector = _end.darxoNormalize();
+		local stepCenter = [normalizedVector.X, normalizedVector.Y, normalizedVector.Z];
+		for (local i = 1; i < _end.getHexDistance(); ++i)
+		{
+			local isSingle = false;
+			local doneFirstSet = false;
+
+			// Every step has up to two tiles that are added to the path
+			local candidate1 = array(3, 0);
+			local candidate2 = array(3, 0);
+
+			for (local j = 0; j <= 2; ++j)
 			{
-				local axis = this.getAxisTiles(stepCenter);
-				local candidates = this.getTilesBetween(axis[0], axis[1]);
-				ret.extend(getClosestTiles(stepCenter, candidates));
-				stepCenter = this.add(stepCenter, normalizedVector);
+				local stepCenterValue = stepCenter[j];
+				if (::fabs(stepCenterValue) == i)	// One value is already the highest absolute value
+				{
+					candidate1[j] = stepCenterValue;
+					candidate2[j] = stepCenterValue;
+				}
+				else if (stepCenterValue % 1 == 0)	// We found a whole number that is not the stepCenterValue. That means all three numbers are whole and we sit directly on a single
+				{
+					ret.push(this.CCTile(stepCenter));
+					isSingle = true;
+					break;
+				}
+				else if (!doneFirstSet)
+				{
+					doneFirstSet = true;
+					candidate1[j] = ::Math.floor(stepCenterValue);
+					candidate2[j] = ::Math.ceil(stepCenterValue);
+				}
+				else
+				{
+					candidate1[j] = ::Math.ceil(stepCenterValue);
+					candidate2[j] = ::Math.floor(stepCenterValue);
+				}
 			}
+			stepCenter[0] += normalizedVector.X;
+			stepCenter[1] += normalizedVector.Y;
+			stepCenter[2] += normalizedVector.Z;
 
-			return ret;
+			if (isSingle) continue;
+
+			ret.push(this.CCTile(candidate1));
+			ret.push(this.CCTile(candidate2));
 		}
+
+		return ret;
 	}
 
 	function isPathPossible(_start, _destination, _allowedTiles )
@@ -303,12 +262,6 @@
 		{
 			_tileArray[index] = this.add(tile, _offset);
 		}
-	}
-
-	function main( _start, _destination )
-	{
-		local allowedTiles = this.generatePath(_start, _destination);
-		this.isPathPossible(_start, _destination, _allowedTiles);
 	}
 
 	function printTiles( _tileArray )
