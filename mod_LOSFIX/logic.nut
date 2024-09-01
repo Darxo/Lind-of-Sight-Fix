@@ -14,7 +14,6 @@
 			return false;	// Our vision is not enough to see the tile
 		}
 
-		// return ::modLOSFIX.PrecalculatedMatrix.hasLineOfSight(myTile, _targetTile);
 		return this.hasLineOfSight(myTile, _targetTile);
 	}
 
