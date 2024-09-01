@@ -1,22 +1,37 @@
 # Description
 
-This mod is a
+Completely rewrite the vanilla calculation for line of sight as well as what is considered cover.
+In general it's now easier to look around cover and uphill and you can actually hide behind hills now from enemy archers or at least use them as cover.
+These two rewrites can be turned off in the options.
 
 # List of all Changes
 
 ## Major Changes
 
-## Additions
+### Custom Line of Sight (Setting)
+Replace the vanilla LOS calculation with a custom one.
+- It's now easier to look uphill and around obstacles
+- You can even look over obstacles if you are high enough up.
+- However hills between you and your target block the vision better
+- A hill that is 2 levels higher than you and adjacent to you will be counted as blocking vision
+- A hill that is 2 levels higher than your target and adjacent to your target will be counted as blocking vision
 
-## Balance & Polishing
+### Custom Cover calculation (Setting)
+Replace the vanilla calculation for when something is considered cover.
+- Any tile that is 2 level higher than you now counts as cover.
+- Any tile that is 2 levels lower than you will never count as cover, even if there is a tree or other obstacle on it.
+- For all other tiles the normal vanilla rules apply where obstacles and entities will count as cover, except allies at a range of 2 tiles only
 
-## Quality of Life
+## Debug
 
-## Fixes
+### Tile Debug Info (Setting)
+When hovering over a tile on the battlefield, display a lot additional information about it like Coordinates and Properties.
+
+### LOS Path (Setting)
+When hovering over a tile on the battlefield, highlight all tiles that belong to the direct path from the active entity to that tile. Tiles which block vision for this path are marked red while all other tiles are marked white.
 
 # Requirements
 
-- Modern Hooks
 - Modding Standards and Utilities (MSU)
 
 # Known Issues:

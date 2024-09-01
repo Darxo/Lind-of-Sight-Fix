@@ -1,17 +1,15 @@
 ### Description ###
 
-Write a short summary about what your mod does without going into specific. This text can then be copy&pasted and used whenever you publish the mod
+Completely rewrite the vanilla calculation for line of sight as well as what is considered cover.
+In general it's now easier to look around cover and uphill and you can actually hide behind hills now from enemy archers or at least use them as cover.
+These two rewrites can be turned off in the options.
 
 ### Future Plans: ###
 
-- This is a checklist of ideas that you consider adding to the mod in the future
-- This will help users to not suggest things to you that you already have plans for
-- And its a basic checklist for yourself if you return to one of your older mods later on
+- Improve performance of background logic?
+- Maybe pre-generated visibility from every tile to every tile at the start of a battle?
 
 ### Changes: ###
-
-0.1.1
-	- vastly rework and improve template using modern hooks
 
 0.1.0
 	- released on discord
