@@ -1,4 +1,4 @@
-::CubeCoordinates <- {
+::modLOSFIX.CubeCoordinates <- {
 	function Origin()
 	{
 		return this.CCTile(0, 0, 0);
@@ -51,7 +51,7 @@
 		// Invert this tile
 		function invert()
 		{
-			return ::CubeCoordinates.CCTile(-X, -Y, -Z);
+			return ::modLOSFIX.CubeCoordinates.CCTile(-X, -Y, -Z);
 		}
 
 		// Return true if the coordinates of two tiles are exactly equal
@@ -64,12 +64,12 @@
 		function darxoNormalize()
 		{
 			local hexDistance = getHexDistance();
-			return ::CubeCoordinates.CCTile(X / hexDistance, Y / hexDistance, Z / hexDistance);
+			return ::modLOSFIX.CubeCoordinates.CCTile(X / hexDistance, Y / hexDistance, Z / hexDistance);
 		}
 
 		function getHexDistance( _otherTile = null )
 		{
-			if (_otherTile == null) _otherTile = ::CubeCoordinates.Origin();
+			if (_otherTile == null) _otherTile = ::modLOSFIX.CubeCoordinates.Origin();
 			return (::fabs(X - _otherTile.X) + ::fabs(Y - _otherTile.Y) + ::fabs(Z - _otherTile.Z)) / 2.0;
 		}
 
@@ -334,18 +334,18 @@
 	}
 }
 
-// ::logWarning(::CubeCoordinates.generatePath([-2, -2, 4]).len());
+// ::logWarning(::modLOSFIX.CubeCoordinates.generatePath([-2, -2, 4]).len());
 
-// ::CubeCoordinates.printTiles(::CubeCoordinates.generatePath(::CubeCoordinates.Tile(3, 1, -4), ::CubeCoordinates.Tile(-2, -2, 4)));
-// ::CubeCoordinates.main(::CubeCoordinates.Tile(3, 1, -4), ::CubeCoordinates.Tile(-2, -2, 4));
-// ::CubeCoordinates.main(::CubeCoordinates.Origin(), ::CubeCoordinates.Tile(-2, -2, 4));
+// ::modLOSFIX.CubeCoordinates.printTiles(::modLOSFIX.CubeCoordinates.generatePath(::modLOSFIX.CubeCoordinates.Tile(3, 1, -4), ::modLOSFIX.CubeCoordinates.Tile(-2, -2, 4)));
+// ::modLOSFIX.CubeCoordinates.main(::modLOSFIX.CubeCoordinates.Tile(3, 1, -4), ::modLOSFIX.CubeCoordinates.Tile(-2, -2, 4));
+// ::modLOSFIX.CubeCoordinates.main(::modLOSFIX.CubeCoordinates.Origin(), ::modLOSFIX.CubeCoordinates.Tile(-2, -2, 4));
 
 
 
 
 /*
 local destination = [5, -5, 0];
-local path = ::CubeCoordinates.getTilesBetween([0, 0, 0], destination);
+local path = ::modLOSFIX.CubeCoordinates.getTilesBetween([0, 0, 0], destination);
 path.remove(3);
-::logWarning(::CubeCoordinates.isPathPossible(destination, path, ::CubeCoordinates.getNormalizedDirections(::CubeCoordinates.invertVector(destination))));
+::logWarning(::modLOSFIX.CubeCoordinates.isPathPossible(destination, path, ::modLOSFIX.CubeCoordinates.getNormalizedDirections(::modLOSFIX.CubeCoordinates.invertVector(destination))));
 */
