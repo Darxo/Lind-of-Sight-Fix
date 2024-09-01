@@ -17,7 +17,7 @@
 	modToggleLOS.addAfterChangeCallback(modToggleCallback);
 
 	// Use Custom Cover calculation
-	miscPage.addBooleanSetting("CustomBlockedTiles", true, "Use Custom Cover calculation", "Replace the vanilla calculation something is considered cover. Any tile that is 2 level higher than you now counts as cover. Any tile that is 2 levels lower than you will never count as cover, even if there is a tree or other obstacle on it.");
+	miscPage.addBooleanSetting("CustomBlockedTiles", true, "Use Custom Cover calculation", "Replace the vanilla calculation for when something is considered cover. Any tile that is 2 level higher than you now counts as cover. Any tile that is 2 levels lower than you will never count as cover, even if there is a tree or other obstacle on it.");
 }
 
 // Debug
@@ -28,7 +28,7 @@
 	debugPage.addBooleanSetting("ShowTileDebugInfo", false, "Show Tile Debug Info", "When hovering over a tile on the battlefield, display a lot additional information about it like Coordinates and Properties.");
 
 	// Show LOS Path
-	local showLOSPathSetting = debugPage.addBooleanSetting("DisplayLOSPath", false, "Show LOS Path", "When hovering over a tile on the battlefield, highlight all tiles that belong to the direct path from the active entity to that tile, except those tiles which block vision for this path.");
+	local showLOSPathSetting = debugPage.addBooleanSetting("DisplayLOSPath", false, "Show LOS Path", "When hovering over a tile on the battlefield, highlight all tiles that belong to the direct path from the active entity to that tile. Tiles which block vision for this path are marked red while all other tiles are marked white.");
 	local showLOSPathCallback = function( _oldValue )
 	{
 		if (!::MSU.Utils.hasState("tactical_state")) return;
