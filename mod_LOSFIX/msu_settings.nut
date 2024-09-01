@@ -15,4 +15,7 @@
 		}
 	};
 	modToggleLOS.addAfterChangeCallback(modToggleCallback);
+
+	// Use Custom Cover calculation
+	miscPage.addBooleanSetting("CustomBlockedTiles", true, "Use Custom Cover calculation", "Replace the vanilla calculation something is considered cover. Any tile that is 2 level higher than you now counts as cover. Any tile that is 2 levels lower than you will never count as cover, even if there is a tree or other obstacle on it.");
 }
