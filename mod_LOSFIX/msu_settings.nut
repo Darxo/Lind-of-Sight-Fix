@@ -2,5 +2,17 @@
 {
 	local miscPage = ::modLOSFIX.Mod.ModSettings.addPage("Misc");
 
-	miscPage.addBooleanSetting( "CustomLOSActive", true , "Mod Active", "Should this mods custom line of sight algorithm be used?");
+	local modToggleLOS = miscPage.addBooleanSetting("CustomLOSActive", true , "Use Custom Line of Sight", "Replace the vanilla LOS calculation with a custom one. It's now easier to look uphill and around obstacles. You can even look over obstacles if you are high enough up. However hills between you and your target block the vision better.");
+	local modToggleCallback = function( _oldValue )
+	{
+		if (!::MSU.Utils.hasState("tactical_state")) return;
+		if (this.Value == _oldValue) return;	// Value didn't change. We don't need an update
+
+		local entity = ::Tactical.TurnSequenceBar.getActiveEntity();
+		if (entity != null)
+		{
+			entity.updateVisibilityForFaction();
+		}
+	};
+	modToggleLOS.addAfterChangeCallback(modToggleCallback);
 }
