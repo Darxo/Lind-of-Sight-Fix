@@ -22,7 +22,7 @@
 				for (local y = 0; y < size.Y; y = ++y)
 				{
 					local tile = ::Tactical.getTileSquare(x, y);
-					if (::Const.Tactical.Common.canSee(this, tile))
+					if (::modLOSFIX.Logic.canSee(this, tile))
 					{
 						tile.addVisibilityForCurrentEntity();
 						tile.addVisibilityForFaction(this.getFaction());
