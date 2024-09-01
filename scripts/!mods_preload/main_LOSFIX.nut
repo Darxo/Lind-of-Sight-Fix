@@ -1,5 +1,5 @@
 ::modLOSFIX <- {
-	ID = "mod_MODID",
+	ID = "mod_LOSFIX",
 	Name = "Line of Sight Fix",
 	Version = "0.1.0",
 	// GitHubURL = "https://github.com/YOURNAME/mod_MODID",
