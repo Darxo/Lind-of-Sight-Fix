@@ -16,7 +16,90 @@
 			}
 		}
 
+		if (!::modLOSFIX.Mod.ModSettings.getSetting("ShowTileDebugInfo").getValue())
+		{
 			return __original();
+		}
+
+		local ret = __original();
+		if (ret == null)
+		{
+			ret = [
+				{
+					id = 1,
+					type = "title",
+					text = this.Const.Strings.Tactical.TerrainName[lastTileHovered.Subtype],
+					icon = "ui/tooltips/height_" + lastTileHovered.Level + ".png"
+				}
+			];
+		}
+
+		local ccTile = ::modLOSFIX.CubeCoordinates.fromAxial(lastTileHovered);
+		local hasLineOfSight = activeEntity == null ? false : ::modLOSFIX.Logic.hasLineOfSight(activeEntity.getTile(), lastTileHovered);
+		ret.extend([
+			{
+				id = 89,
+				type = "text",
+				text = "hasLineOfSight: " + hasLineOfSight,
+			},
+			{
+				id = 90,
+				type = "text",
+				text = "IsDiscovered: " + lastTileHovered.IsDiscovered
+			},
+			{
+				id = 90,
+				type = "text",
+				text = "IsVisibleForEntity: " + lastTileHovered.IsVisibleForEntity
+			},
+			{
+				id = 90,
+				type = "text",
+				text = "IsVisibleForPlayer: " + lastTileHovered.IsVisibleForPlayer
+			},
+			{
+				id = 90,
+				type = "text",
+				text = "IsSpecialTerrain: " + lastTileHovered.IsSpecialTerrain
+			},
+			{
+				id = 90,
+				type = "text",
+				text = "IsOccupiedByActor: " + lastTileHovered.IsOccupiedByActor
+			},
+			{
+				id = 90,
+				type = "text",
+				text = "IsHidingEntity: " + lastTileHovered.IsHidingEntity
+			},
+			{
+				id = 90,
+				type = "text",
+				text = "IsEmpty: " + lastTileHovered.IsEmpty
+			},
+			{
+				id = 90,
+				type = "text",
+				text = "Default (Axial): X: " + lastTileHovered.X + ", Y: " + lastTileHovered.Y
+			},
+			/*{
+				id = 90,
+				type = "text",
+				text = "Coords (Axial): X: " + lastTileHovered.Coords.X + ", Y: " + lastTileHovered.Coords.Y
+			},*/
+			{
+				id = 90,
+				type = "text",
+				text = "Square (Odd-Q): X: " + lastTileHovered.SquareCoords.X + ", Y: " + lastTileHovered.SquareCoords.Y
+			},
+			{
+				id = 89,
+				type = "text",
+				text = "ccTile: " + ccTile.asString(),
+			},
+		]);
+
+		return ret;
 	}
 
 // New Functions

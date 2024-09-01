@@ -24,6 +24,9 @@
 {
 	local debugPage = ::modLOSFIX.Mod.ModSettings.addPage("Debug");
 
+	// Show Tile Debug Info
+	debugPage.addBooleanSetting("ShowTileDebugInfo", false, "Show Tile Debug Info", "When hovering over a tile on the battlefield, display a lot additional information about it like Coordinates and Properties.");
+
 	// Show LOS Path
 	local showLOSPathSetting = debugPage.addBooleanSetting("DisplayLOSPath", false, "Show LOS Path", "When hovering over a tile on the battlefield, highlight all tiles that belong to the direct path from the active entity to that tile, except those tiles which block vision for this path.");
 	local showLOSPathCallback = function( _oldValue )
