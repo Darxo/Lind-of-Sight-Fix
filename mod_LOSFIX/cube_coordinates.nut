@@ -180,19 +180,15 @@
 			return [this.cloneTile(_start)];
 		}
 
-		// ::logWarning("getTilesBetween " + _start.asString() + " and " + _end.asString());
 		local ret = [this.cloneTile(_start), this.cloneTile(_end)];
 
 		local normalizedVector = this.getVector(_start, _end).darxoNormalize();
-		// ::logWarning("normalizedVector " + normalizedVector.asString());
 		local it = this.add(_start, normalizedVector);
 		while (!it.isEqual(_end))
 		{
-			// ::logWarning("it = " + it.asString());
 			ret.push(it);
 			it = this.add(it, normalizedVector);
 		}
-		// ::logWarning("result: ");
 		this.printTiles(ret);
 		return ret;
 	}
@@ -201,7 +197,6 @@
 	// Otherwise the closest two tiles are returned
 	function getClosestTiles( _stepCenter, _tilesToCheck )
 	{
-		// ::logWarning("getClosestTiles " + _stepCenter.asString() + " _tilesToCheck: ");
 		this.printTiles(_tilesToCheck)
 		if (_tilesToCheck.len() == 1) return _tilesToCheck;
 
@@ -215,9 +210,6 @@
 		}
 
 		sortedTiles.sort(@(a, b) a.Distance <=> b.Distance);
-
-		// ::logWarning("Shortest Distance " + sortedTiles[0].Distance);
-		// ::logWarning("Longest Distance " + sortedTiles[sortedTiles.len() - 1].Distance);
 
 		if (sortedTiles[0].Distance == 0)
 		{
@@ -248,7 +240,6 @@
 	// Generate a path from the origin to _end
 	function __generatePath( _end )
 	{
-		// ::logWarning("generatePath");
 		if (_end.X == 0 || _end.Y == 0 || _end.Z == 0)	// _end is sitting on one of the axis. Calculation is trivial
 		{
 			return getTilesBetween(this.Origin(), _end);
@@ -261,7 +252,6 @@
 			local stepCenter = this.add(this.Origin(), normalizedVector);
 			for (local i = 1; i < _end.getHexDistance(); ++i)
 			{
-				// ::logWarning("Distance " + i + "; stepCenter: " + stepCenter.asString());
 				local axis = this.getAxisTiles(stepCenter);
 				local candidates = this.getTilesBetween(axis[0], axis[1]);
 				ret.extend(getClosestTiles(stepCenter, candidates));
@@ -275,8 +265,6 @@
 	function isPathPossible(_start, _destination, _allowedTiles )
 	{
 		local allowedDirections = this.getNormalizedDirections(_start, _destination);
-		// ::logWarning("Direction 1: " + allowedDirections[0].asString());
-		// if (allowedDirections.len() == 2) ::logWarning("Direction 2: " + allowedDirections[1].asString());
 		return this.__isPathPossible(_start, _destination, _allowedTiles, allowedDirections);
 	}
 
@@ -330,22 +318,5 @@
 		{
 			arrayString += tile.asString() + ", ";
 		}
-		// ::logWarning(arrayString);
 	}
 }
-
-// ::logWarning(::modLOSFIX.CubeCoordinates.generatePath([-2, -2, 4]).len());
-
-// ::modLOSFIX.CubeCoordinates.printTiles(::modLOSFIX.CubeCoordinates.generatePath(::modLOSFIX.CubeCoordinates.Tile(3, 1, -4), ::modLOSFIX.CubeCoordinates.Tile(-2, -2, 4)));
-// ::modLOSFIX.CubeCoordinates.main(::modLOSFIX.CubeCoordinates.Tile(3, 1, -4), ::modLOSFIX.CubeCoordinates.Tile(-2, -2, 4));
-// ::modLOSFIX.CubeCoordinates.main(::modLOSFIX.CubeCoordinates.Origin(), ::modLOSFIX.CubeCoordinates.Tile(-2, -2, 4));
-
-
-
-
-/*
-local destination = [5, -5, 0];
-local path = ::modLOSFIX.CubeCoordinates.getTilesBetween([0, 0, 0], destination);
-path.remove(3);
-::logWarning(::modLOSFIX.CubeCoordinates.isPathPossible(destination, path, ::modLOSFIX.CubeCoordinates.getNormalizedDirections(::modLOSFIX.CubeCoordinates.invertVector(destination))));
-*/
