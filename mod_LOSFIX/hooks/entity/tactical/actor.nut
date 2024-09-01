@@ -26,9 +26,18 @@
 					{
 						tile.addVisibilityForCurrentEntity();
 						tile.addVisibilityForFaction(this.getFaction());
+						if (this.getFaction() == this.Const.Faction.PlayerAnimals)
+						{
+							tile.addVisibilityForFaction(::Const.Faction.Player);
+						}
+
 						if (tile.IsOccupiedByActor)
 						{
-							tile.getEntity().setDiscovered(true);
+							// Player and PlayerAnimals will discover tiles for the Player
+							if (this.getFaction() == ::Const.Faction.Player || this.getFaction() == ::Const.Faction.PlayerAnimals)
+							{
+								tile.getEntity().setDiscovered(true);
+							}
 						}
 					}
 				}
