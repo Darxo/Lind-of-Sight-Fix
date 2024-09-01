@@ -36,6 +36,10 @@
 					{
 						tile.addVisibilityForCurrentEntity();
 						tile.addVisibilityForFaction(this.getFaction());
+						if (tile.IsOccupiedByActor)
+						{
+							tile.getEntity().setDiscovered(true);
+						}
 					}
 				}
 			}
