@@ -65,7 +65,7 @@
 			return true;
 		}
 
-		local heightDifference = tileHeight - _userTile.Level + tileHeight - _targetTile.Level;
-		return heightDifference >= 3;
+		local totalHeightDifference = tileHeight - _userTile.Level + tileHeight - _targetTile.Level;
+		return totalHeightDifference >= 3;
 	}
 }
