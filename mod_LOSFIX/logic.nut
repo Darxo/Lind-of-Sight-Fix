@@ -27,15 +27,16 @@
 	}
 
 	// Determines whether _tile would block line of sight between _userTile and _targetTile
+	// This function is symmetric in the sense that it will always yield the same result, even if _userTile and _targetTile was swapped
 	function isBlockingLOS( _userTile, _targetTile, _tile )
 	{
 		if (_tile.isSameTileAs(_userTile)) return false;	// My tile never blocks line of sight
-		if (_tile.isSameTileAs(_targetTile)) return false;	// My tile never blocks line of sight
+		if (_tile.isSameTileAs(_targetTile)) return false;	// The destination tile never blocks line of sight
 
 		local tileHeight = _tile.Level;
 		if (!_tile.IsEmpty && _tile.getEntity().isBlockingSight()) tileHeight += 2;	// A visibility blocking object counts as 2 height instead of blocking LOS outright
 
-		// If the tile in question is very close to the user or target, then it is sufficient if it's 2 levels higher rather than the 3 otherwise
+		// If the tile in question is very close to the user or target, then it is sufficient if it's 2 levels higher in order to block line of sight
 		if (_userTile.getDistanceTo(_tile) == 1 && (tileHeight >= _userTile.Level + 2))
 		{
 			return true;
