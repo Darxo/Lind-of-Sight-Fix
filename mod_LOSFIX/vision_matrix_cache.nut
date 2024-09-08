@@ -29,26 +29,26 @@ In Vanilla Sunken Library fight the level of tiles can raise and fall therefor m
 	// The lookup of known combination is very fast
 	function hasLineOfSight(_originTile, _targetTile)
 	{
-		local originId = this.__getID(_originTile);
-		local targetId = this.__getID(_targetTile);
+		local originId = ::modLOSFIX.VisionMatrixCache.__getID(_originTile);
+		local targetId = ::modLOSFIX.VisionMatrixCache.__getID(_targetTile);
 
-		if (this.LOSMatrix[originId][targetId] == null)
+		if (::modLOSFIX.VisionMatrixCache.LOSMatrix[originId][targetId] == null)
 		{
-			if (::modLOSFIX.Logic.hasLineOfSight(_originTile, _targetTile))
+			if (::modLOSFIX.Logic.__hasLineOfSight(_originTile, _targetTile))
 			{
-				this.LOSMatrix[originId][targetId] = true;
-				this.LOSMatrix[targetId][originId] = true;
+				::modLOSFIX.VisionMatrixCache.LOSMatrix[originId][targetId] = true;
+				::modLOSFIX.VisionMatrixCache.LOSMatrix[targetId][originId] = true;
 				return true;
 			}
 			else
 			{
-				this.LOSMatrix[originId][targetId] = false;
-				this.LOSMatrix[targetId][originId] = false;
+				::modLOSFIX.VisionMatrixCache.LOSMatrix[originId][targetId] = false;
+				::modLOSFIX.VisionMatrixCache.LOSMatrix[targetId][originId] = false;
 				return false;
 			}
 		}
 
-		return this.LOSMatrix[originId][targetId];
+		return ::modLOSFIX.VisionMatrixCache.LOSMatrix[originId][targetId];
 	}
 
 	// Translate coordinates into a single unique ID starting at 0

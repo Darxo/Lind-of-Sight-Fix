@@ -2,6 +2,9 @@
 	q.initMap = @(__original) function()
 	{
 		__original();
-		::modLOSFIX.PrecalculatedMatrix.initializeMatrix();
+		if (::modLOSFIX.Mod.ModSettings.getSetting("VisionMatrixCache").getValue())
+		{
+			::modLOSFIX.VisionMatrixCache.initializeMatrix();
+		}
 	}
 });

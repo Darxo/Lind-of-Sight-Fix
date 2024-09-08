@@ -14,35 +14,16 @@
 			return false;	// Our vision is not enough to see the tile
 		}
 
-		return this.hasLineOfSight(myTile, _targetTile);
+		return ::modLOSFIX.Logic.hasLineOfSight(myTile, _targetTile);
 	}
 
+	// Proxy-Function.
 	// Determines whether _startTile can see _targetTile
 	// Will consider visibility blocking obstacles and terrain level
 	// Returns true if _startTile can see _targetTile; return false otherwise
 	function hasLineOfSight( _startTile, _targetTile )
 	{
-		local ccStartTile = ::modLOSFIX.CubeCoordinates.fromAxial(_startTile);
-		local ccTargetTile = ::modLOSFIX.CubeCoordinates.fromAxial(_targetTile);
-		local path = ::modLOSFIX.CubeCoordinates.generatePath(ccStartTile, ccTargetTile);
-
-		// Remove all tiles from the path, which block line of sight
-		for (local index = path.len() - 1; index >= 0; --index)
-		{
-			if (!::Tactical.isValidTile(path[index].axialX, path[index].axialY))
-			{
-				path.remove(index);
-				continue;
-			}
-
-			if (this.isBlockingLOS(_startTile, _targetTile, ::Tactical.getTile(path[index].axialX, path[index].axialY)))
-			{
-				path.remove(index);
-				continue;
-			}
-		}
-
-		return ::modLOSFIX.CubeCoordinates.isPathPossible(ccStartTile, ccTargetTile, path);
+		::logError("Proxy Function was not replaced!");
 	}
 
 	// Determines whether _tile would block line of sight between _userTile and _targetTile
@@ -66,5 +47,33 @@
 
 		local totalHeightDifference = tileHeight - _userTile.Level + tileHeight - _targetTile.Level;
 		return totalHeightDifference >= 3;
+	}
+
+	// Determines whether _startTile can see _targetTile
+	// Will consider visibility blocking obstacles and terrain level
+	// Returns true if _startTile can see _targetTile; return false otherwise
+	function __hasLineOfSight( _startTile, _targetTile )
+	{
+		local ccStartTile = ::modLOSFIX.CubeCoordinates.fromAxial(_startTile);
+		local ccTargetTile = ::modLOSFIX.CubeCoordinates.fromAxial(_targetTile);
+		local path = ::modLOSFIX.CubeCoordinates.generatePath(ccStartTile, ccTargetTile);
+
+		// Remove all tiles from the path, which block line of sight
+		for (local index = path.len() - 1; index >= 0; --index)
+		{
+			if (!::Tactical.isValidTile(path[index].axialX, path[index].axialY))
+			{
+				path.remove(index);
+				continue;
+			}
+
+			if (this.isBlockingLOS(_startTile, _targetTile, ::Tactical.getTile(path[index].axialX, path[index].axialY)))
+			{
+				path.remove(index);
+				continue;
+			}
+		}
+
+		return ::modLOSFIX.CubeCoordinates.isPathPossible(ccStartTile, ccTargetTile, path);
 	}
 }
