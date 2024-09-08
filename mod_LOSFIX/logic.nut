@@ -49,7 +49,8 @@
 	// Determines whether _tile would block line of sight between _userTile and _targetTile
 	function isBlockingLOS( _userTile, _targetTile, _tile )
 	{
-		if (_userTile.getDistanceTo(_targetTile) <= 1) return false;	// Both tiles are adjacent. They will always see each other
+		if (_tile.isSameTileAs(_userTile)) return false;	// My tile never blocks line of sight
+		if (_tile.isSameTileAs(_targetTile)) return false;	// My tile never blocks line of sight
 
 		local tileHeight = _tile.Level;
 		if (!_tile.IsEmpty && _tile.getEntity().isBlockingSight()) tileHeight += 2;	// A visibility blocking object counts as 2 height instead of blocking LOS outright
