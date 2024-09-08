@@ -8,7 +8,8 @@
 		local visionRange = _entity.getCurrentProperties().getVision();
 		local tileDistance = myTile.getDistanceTo(_targetTile);
 
-		if (tileDistance + _targetTile.Level > visionRange + myTile.Level)	// You can view further downhill and less uphill
+		local bonusVision = ::Math.max(0, myTile.Level - _targetTile.Level);		// You can view further downhill
+		if (tileDistance > visionRange + bonusVision)
 		{
 			return false;	// Our vision is not enough to see the tile
 		}
