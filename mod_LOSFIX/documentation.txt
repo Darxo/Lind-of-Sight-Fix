@@ -11,5 +11,13 @@ These two rewrites can be turned off in the options.
 
 ### Changes: ###
 
+0.2.0
+	- Introduce new Vision Matrix Cache setting, which saves every already calculated LOS combination which should improve performance in longer battles
+	- Looking uphill no longer reduces your vision
+	- Improve performance of LOS calculation
+	- Improve structure of logic.nut
+	- add github source
+	- fix mod id
+
 0.1.0
 	- released on discord

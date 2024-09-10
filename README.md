@@ -9,7 +9,7 @@ These two rewrites can be turned off in the options.
 ## Major Changes
 
 ### Custom Line of Sight (Setting)
-Replace the vanilla LOS calculation with a custom one.
+Replace the vanilla LOS calculation with a custom one:
 - It's now easier to look uphill and around obstacles
 - You can even look over obstacles if you are high enough up.
 - However hills between you and your target block the vision better
@@ -21,6 +21,10 @@ Replace the vanilla calculation for when something is considered cover.
 - Any tile that is 2 level higher than you now counts as cover.
 - Any tile that is 2 levels lower than you will never count as cover, even if there is a tree or other obstacle on it.
 - For all other tiles the normal vanilla rules apply where obstacles and entities will count as cover, except allies at a range of 2 tiles only
+
+### Vision Matrix Cache (Setting)
+Enables a dynamically populated matrix that stores Line of Sight (LOS) data between hex tiles. It is filled during combat as LOS checks are made, allowing for faster lookups in subsequent checks.
+This feature is only effective when vision-blocking elements remain static on the map. Disable this option if you expect dynamic changes, like new obstacles appearing during combat, as it may lead to inaccurate results.
 
 ## Debug
 
