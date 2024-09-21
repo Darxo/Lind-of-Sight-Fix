@@ -11,6 +11,7 @@
 		{
 			if (::modLOSFIX.Mod.ModSettings.getSetting("DisplayLOSPath").getValue())
 			{
+				::TooltipEvents.markTiles([], []);	// Reset the current path. It may point to tiles from the last battle
 				local pathArray = this.getTacticalPath(activeEntity.getTile(), lastTileHovered);
 				this.markTiles(pathArray[0], pathArray[1]);
 			}
@@ -110,19 +111,19 @@
 		{
 			tile.clear(::Const.Tactical.DetailFlag.SpecialOverlay);
 		}
+		this.m.MarkedTiles = [];
 
 		foreach (tile in _validTiles)
 		{
 			tile.spawnDetail("zone_selection_overlay", ::Const.Tactical.DetailFlag.SpecialOverlay, false, true);
+			this.m.MarkedTiles.push(tile);
 		}
 
 		foreach (tile in _blockedTiles)
 		{
 			tile.spawnDetail("zone_target_overlay", ::Const.Tactical.DetailFlag.SpecialOverlay, false, true);
+			this.m.MarkedTiles.push(tile);
 		}
-
-		this.m.MarkedTiles = _validTiles;
-		this.m.MarkedTiles.extend(_blockedTiles)
 	}
 
 	// Generate a path from _startTile to _targetTile and diffentiate tiles which block vision on that path
