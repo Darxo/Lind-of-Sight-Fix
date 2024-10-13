@@ -36,7 +36,9 @@
 		}
 
 		local ccTile = ::modLOSFIX.CubeCoordinates.fromAxial(lastTileHovered);
-		local hasLineOfSight = activeEntity == null ? false : ::modLOSFIX.Logic.hasLineOfSight(activeEntity.getTile(), lastTileHovered);
+
+		local hasLineOfSight = false;
+		if (activeEntity != null && activeEntity.isPlacedOnMap()) hasLineOfSight = ::modLOSFIX.Logic.hasLineOfSight(activeEntity.getTile(), lastTileHovered);
 		ret.extend([
 			{
 				id = 89,
