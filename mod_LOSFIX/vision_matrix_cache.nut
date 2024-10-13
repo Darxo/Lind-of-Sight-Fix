@@ -95,3 +95,6 @@ In Vanilla Sunken Library fight the level of tiles can raise and fall therefor m
 		::logWarning("Total time for matrix generation: " + timer.silentStop() / 1000 + " seconds");
 	}
 }
+
+// This function will normally be replaced by the callback function of our VisionMatrixCache setting, but that might not happen the first time ever, you use this mod
+::modLOSFIX.Logic.hasLineOfSight = ::modLOSFIX.Logic.__hasLineOfSight;
