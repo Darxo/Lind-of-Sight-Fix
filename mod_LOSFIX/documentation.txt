@@ -6,10 +6,13 @@ These two rewrites can be turned off in the options.
 
 ### Future Plans: ###
 
-- Improve performance of background logic?
-- Maybe pre-generated visibility from every tile to every tile at the start of a battle?
+- Maybe pre-generated visibility from every tile to every tile at the start of a battle? Unfortunately this action is highly expensive and not realistic
 
 ### Changes: ###
+
+0.2.1
+	- Fix combat map being completely dark after first using this mod
+	- Fix crash when viewing tile debug information while moving a character
 
 0.2.0
 	- Introduce new Vision Matrix Cache setting, which saves every already calculated LOS combination which should improve performance in longer battles
