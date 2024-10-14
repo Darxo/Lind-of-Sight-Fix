@@ -1,7 +1,7 @@
 ::modLOSFIX <- {
 	ID = "mod_LOSFIX",
 	Name = "Line of Sight Fix",
-	Version = "0.2.1",
+	Version = "0.2.2",
 	GitHubURL = "https://github.com/Darxo/Line-of-Sight-Fix",
 }
 
