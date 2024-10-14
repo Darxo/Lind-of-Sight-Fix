@@ -78,3 +78,6 @@
 		return ::modLOSFIX.CubeCoordinates.isPathPossible(ccStartTile, ccTargetTile, path);
 	}
 }
+
+// This function will normally be replaced by the callback function of our VisionMatrixCache setting, but that might not happen the first time ever, you use this mod
+::modLOSFIX.Logic.hasLineOfSight = ::modLOSFIX.Logic.__hasLineOfSight;
