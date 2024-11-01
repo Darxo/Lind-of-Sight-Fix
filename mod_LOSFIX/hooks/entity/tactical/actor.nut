@@ -17,9 +17,9 @@
 			oldUpdateVisibility( _tile, -5, _faction);
 
 			local size = ::Tactical.getMapSize();
-			for (local x = 0; x < size.X; x = ++x)
+			for (local x = 0; x < size.X; ++x)
 			{
-				for (local y = 0; y < size.Y; y = ++y)
+				for (local y = 0; y < size.Y; ++y)
 				{
 					local tile = ::Tactical.getTileSquare(x, y);
 					if (::modLOSFIX.Logic.canSee(this, tile))
