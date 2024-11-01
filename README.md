@@ -22,6 +22,9 @@ Replace the vanilla calculation for when something is considered cover.
 - Any tile that is 2 levels lower than you will never count as cover, even if there is a tree or other obstacle on it.
 - For all other tiles the normal vanilla rules apply where obstacles and entities will count as cover, except allies at a range of 2 tiles only
 
+### Preview blocked tiles (Setting)
+When previewing movement during battle, all covering tiles next to your destination is now highlighted.
+
 ### Vision Matrix Cache (Setting)
 Enables a dynamically populated matrix that stores Line of Sight (LOS) data between hex tiles. It is filled during combat as LOS checks are made, allowing for faster lookups in subsequent checks.
 This feature is only effective when vision-blocking elements remain static on the map. Disable this option if you expect dynamic changes, like new obstacles appearing during combat, as it may lead to inaccurate results.
@@ -39,6 +42,7 @@ When hovering over a tile on the battlefield, highlight all tiles that belong to
 - Modding Standards and Utilities (MSU)
 
 # Known Issues:
+- The feature **Preview blocked tiles** will never highlight the tile that the active entity is standing on. So when you move downhills 2 levels landing on an adjacent tile to your starting position, the preview will be inaccurate
 
 # Compatibility
 
