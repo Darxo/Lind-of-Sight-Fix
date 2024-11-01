@@ -19,6 +19,10 @@
 	// Use Custom Cover calculation
 	miscPage.addBooleanSetting("CustomBlockedTiles", true, "Use Custom Cover calculation", "Replace the vanilla calculation for when something is considered cover. Any tile that is 2 level higher than you now counts as cover. Any tile that is 2 levels lower than you will never count as cover, even if there is a tree or other obstacle on it.");
 
+	miscPage.addBooleanSetting("CustomBlockedTilesPreview", true, "Preview blocked tiles", "Requires: \'Use Custom Cover calculation\'\n\nWhen moving to a new tile, highlight all adjacent tiles, which would be considered cover for you there.");
+
+	miscPage.addDivider("MiscDivider1");
+
 	// Vision Matrix Cache
 	local visionMatrixSetting = miscPage.addBooleanSetting("VisionMatrixCache", false, "Vision Matrix Cache", "Enables a dynamically populated matrix that stores Line of Sight (LOS) data between hex tiles. It is filled during combat as LOS checks are made, allowing for faster lookups in subsequent checks. \nThis feature is only effective when vision-blocking elements remain static on the map. Disable this option if you expect dynamic changes, like new obstacles appearing during combat, as it may lead to inaccurate results.");
 	local visionMatrixCallback = function( _oldValue )
