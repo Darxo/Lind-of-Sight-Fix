@@ -10,6 +10,9 @@ These two rewrites can be turned off in the options.
 
 ### Changes: ###
 
+0.3.1
+	- Fix massive lag when releasing a falcon
+
 0.3.0
 	- Introduce new "Preview blocked tiles" setting, that will display all covering tile at your destination location when computing movement paths during combat
 
