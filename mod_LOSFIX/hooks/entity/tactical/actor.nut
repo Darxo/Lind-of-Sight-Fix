@@ -16,30 +16,90 @@
 			// So if I call it with a vision of -5 then it should not discover anything. Unless that something is more than 5 levels downhill
 			oldUpdateVisibility( _tile, -5, _faction);
 
-			local size = ::Tactical.getMapSize();
-			for (local x = 0; x < size.X; ++x)
+			local forPlayer = (this.getFaction() == ::Const.Faction.Player || this.getFaction() == ::Const.Faction.PlayerAnimals);
+			if (forPlayer)
 			{
-				for (local y = 0; y < size.Y; ++y)
-				{
-					local tile = ::Tactical.getTileSquare(x, y);
-					if (::modLOSFIX.Logic.canSee(this, tile))
-					{
-						tile.addVisibilityForCurrentEntity();
-						tile.addVisibilityForFaction(this.getFaction());
-						if (this.getFaction() == this.Const.Faction.PlayerAnimals)
-						{
-							tile.addVisibilityForFaction(::Const.Faction.Player);
-						}
+				// this.LF_UpdateVisibility();
+				this.LF_UpdateVisibilityForPlayer();
+			}
+			else
+			{
+				this.LF_UpdateVisibility();
+			}
+		}
+	}
 
-						if (tile.IsOccupiedByActor)
+// New Functions
+	// Reveal all tiles around this actor for this actor and the player faction, including hidden tiles, which will be hidden later on
+	// Reveal all tiles around this actor, which this actor can currently see
+	// If _forPlayer is set to true, we might repeat this call once
+	q.LF_UpdateVisibilityForPlayer <- function()
+	{
+		local repeat = false;
+
+		local size = ::Tactical.getMapSize();
+		for (local x = 0; x < size.X; ++x)
+		{
+			for (local y = 0; y < size.Y; ++y)
+			{
+				local tile = ::Tactical.getTileSquare(x, y);
+				if (tile.IsVisibleForPlayer)
+				{
+					// ::logWarning("Tile " + x + " " + y + " is weirdly enough visible to the player");
+					// ::MSU.Log.printStackTrace();
+					::modLOSFIX.Logic.getTileInfo(tile).Defogged = true;
+				}
+
+				if (::modLOSFIX.Logic.canSeeTile(this, tile))
+				{
+					if (!::modLOSFIX.Logic.canSeeContent(this, tile))	// We are about to reveal a tile, that has a bush (or similar) on it
+					{
+						if (tile.IsDiscovered)
 						{
-							// Player and PlayerAnimals will discover tiles for the Player
-							if (this.getFaction() == ::Const.Faction.Player || this.getFaction() == ::Const.Faction.PlayerAnimals)
-							{
-								tile.getEntity().setDiscovered(true);
-							}
+							continue;	// We don't reveal bush tiles that are already discovered, just in case no repeat is happening to reset them
+						}
+						else
+						{
+							repeat = true;	// We just revealed a black/undiscovered bush tile. Now we need a full resetFox
 						}
 					}
+					else
+					{
+						tile.addVisibilityForCurrentEntity();
+						if (tile.IsOccupiedByActor)	// Player and PlayerAnimals will discover entities for the Player
+						{
+							tile.getEntity().setDiscovered(true);
+						}
+					}
+
+					tile.addVisibilityForFaction(this.getFaction());
+					if (this.getFaction() == ::Const.Faction.PlayerAnimals)
+					{
+						tile.addVisibilityForFaction(::Const.Faction.Player);
+					}
+				}
+			}
+		}
+
+		if (repeat)
+		{
+			::modLOSFIX.Logic.resetFog();	// Add fog of war everywhere and then reveal tiles that the player can see
+			this.LF_UpdateVisibility();
+		}
+	}
+
+	// Reveal all tiles around this actor for this actor and its faction, excluding hidden tiles
+	q.LF_UpdateVisibility <- function()
+	{
+		local size = ::Tactical.getMapSize();
+		for (local x = 0; x < size.X; ++x)
+		{
+			for (local y = 0; y < size.Y; ++y)
+			{
+				local tile = ::Tactical.getTileSquare(x, y);
+				if (::modLOSFIX.Logic.canSeeTile(this, tile) && ::modLOSFIX.Logic.canSeeContent(this, tile))
+				{
+					::modLOSFIX.Logic.revealTile(this, tile);
 				}
 			}
 		}

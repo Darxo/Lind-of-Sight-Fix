@@ -42,7 +42,7 @@
 	// Determines whether _entity can see _targetTile
 	// Will consider vision of _entity, visibility blocking obstacles and terrain level
 	// Returns true if _entity can see _targetTile; return false otherwise
-	function canSee( _entity, _targetTile )
+	function canSeeTile( _entity, _targetTile )
 	{
 		local myTile = _entity.getTile();
 		local visionRange = _entity.getCurrentProperties().getVision();
