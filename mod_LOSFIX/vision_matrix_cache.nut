@@ -57,6 +57,11 @@ In Vanilla Sunken Library fight the level of tiles can raise and fall therefor m
 		return (_tile.SquareCoords.Y * this.MapSize.X) + _tile.SquareCoords.X;
 	}
 
+	function matrixIndexToTile( _matrixIndex )
+	{
+		return ::Tactical.getTileSquare(_matrixIndex % this.MapSize.X, ::Math.floor(_matrixIndex / this.MapSize.X));
+	}
+
 	// Calculating a full matrix at once is not advisable because it takes really a long time, its purely theoretical
 	// With a _maxDistance of 5 I need around 9 seconds to generate one
 	// With a _maxDistance of 10 I need around 55 seconds to generate one

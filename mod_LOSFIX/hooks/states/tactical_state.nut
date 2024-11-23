@@ -4,6 +4,7 @@
 		__original();
 		::TooltipEvents.m.MarkedTiles = [];		// Delete the previous array as it potentially points to invalid tiles from a past battle
 		::modLOSFIX.VisionMatrixCache.initializeMatrix();
+		::modLOSFIX.Logic.initialize();
 	}
 
 	q.computeEntityPath = @(__original) function( _activeEntity, _mouseEvent )
@@ -28,5 +29,11 @@
 				}
 			}
 		}
+	}
+
+	q.turnsequencebar_onNextRound = @(__original) function( _round )
+	{
+		__original(_round);
+		::modLOSFIX.Logic.clearTileMatrix();
 	}
 });
