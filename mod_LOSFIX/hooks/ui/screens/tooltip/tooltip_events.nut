@@ -29,7 +29,7 @@
 				{
 					id = 1,
 					type = "title",
-					text = this.Const.Strings.Tactical.TerrainName[lastTileHovered.Subtype],
+					text = ::Const.Strings.Tactical.TerrainName[lastTileHovered.Subtype],
 					icon = "ui/tooltips/height_" + lastTileHovered.Level + ".png"
 				}
 			];

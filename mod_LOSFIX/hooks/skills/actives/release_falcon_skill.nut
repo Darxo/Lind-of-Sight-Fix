@@ -3,9 +3,9 @@
 	{
 		local ret = __original(_user, _targetTile);
 
-		if (this.Tactical.TurnSequenceBar.getActiveEntity() != null)
+		if (::Tactical.TurnSequenceBar.getActiveEntity() != null)
 		{
-			this.Tactical.TurnSequenceBar.getActiveEntity().updateVisibilityForFaction();	// In Vanilla this is not done one at the end, but rather once for each tile
+			::Tactical.TurnSequenceBar.getActiveEntity().updateVisibilityForFaction();	// In Vanilla this is not done one at the end, but rather once for each tile
 		}
 
 		return ret;
