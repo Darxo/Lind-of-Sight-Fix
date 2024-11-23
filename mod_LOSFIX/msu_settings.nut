@@ -35,13 +35,6 @@
 		{
 			::modLOSFIX.Logic.hasLineOfSight = ::modLOSFIX.Logic.__hasLineOfSight;
 		}
-
-		if (!::MSU.Utils.hasState("tactical_state")) return;
-
-		if (this.Value)
-		{
-			::modLOSFIX.VisionMatrixCache.initializeMatrix();
-		}
 	};
 	visionMatrixSetting.addAfterChangeCallback(visionMatrixCallback);
 }
